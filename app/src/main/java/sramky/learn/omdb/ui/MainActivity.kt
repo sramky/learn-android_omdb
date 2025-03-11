@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -27,10 +28,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
+import sramky.learn.omdb.BuildConfig
 import sramky.learn.omdb.ui.viewmodel.OmdbViewModel
 
 class MainActivity : ComponentActivity() {
@@ -47,7 +51,6 @@ class MainActivity : ComponentActivity() {
 
         val viewModel: OmdbViewModel = viewModel()
 
-        val apiKey by viewModel.apiKey.collectAsState()
         val enteredMovieTitle by viewModel.enteredMovieTitle.collectAsState()
         val searchTrigger by viewModel.searchTrigger.collectAsState()
         val movies by viewModel.movies.collectAsState()
@@ -55,6 +58,7 @@ class MainActivity : ComponentActivity() {
         val errorMessage by viewModel.errorMessage.collectAsState()
         val errorMessage2 by viewModel.errorMessage2.collectAsState()
 
+        val apiKey = BuildConfig.OMDB_API_KEY
         val context = LocalContext.current
 
         Column(
@@ -66,13 +70,7 @@ class MainActivity : ComponentActivity() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // textové polia pre zadanie api kľúča a hľadaného výrazu
-
-            EditableOutlinedTextField(
-                value = apiKey,
-                onValueChange = { viewModel.updateApiKey(it) },
-                label = "Enter your API Key"
-            )
+            // textové pole pre zadanie hľadaného výrazu
 
             EditableOutlinedTextField(
                 value = enteredMovieTitle,
@@ -100,26 +98,53 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
             // Výpis výsledkov
             if (movies.isNotEmpty()) {
                 Text(text = "Počet vyhľadaných filmov: $count")
                 Spacer(modifier = Modifier.height(16.dp))
 
-                LazyColumn (horizontalAlignment = Alignment.CenterHorizontally) {
-                    items(movies) { movie ->
-                        Text(text= "${movie.title} (${movie.year})")
-                        Spacer(modifier = Modifier.height(8.dp))
+                // Výpis do tabuľky
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.TopStart
+                )
+                {
+                    Column(modifier = Modifier.fillMaxWidth().border(1.dp, Color.Black)) {
+                        // Hlavička tabuľky
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Text(text = "Title", modifier = Modifier.weight(6f), fontWeight = FontWeight.Bold)
+                            Text(text = "Year", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
+                            Text(text = "Type", modifier = Modifier.weight(2f), fontWeight = FontWeight.Bold)
+                        }
+
+                        // Scrollovanie len pre položky
+                        LazyColumn {
+                            items(movies) { movie ->
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(8.dp)
+                                ) {
+                                    Text(text = movie.title, modifier = Modifier.weight(6f))
+                                    Text(text = movie.year, modifier = Modifier.weight(1f))
+                                    Text(text = movie.type, modifier = Modifier.weight(2f))
+                                }
+                            }
+                        }
                     }
                 }
-
             } else if (searchTrigger)
                 CircularProgressIndicator(
                     modifier = Modifier.size(50.dp),
                     strokeWidth = 4.dp
                 )
-
         }
     }
 }

@@ -30,19 +30,13 @@ import sramky.learn.omdb.network.Movie
 
 class OmdbViewModel : ViewModel() {
     // StateFlow
-    private val _apiKey = MutableStateFlow("db9d55bc")
-    val apiKey: StateFlow<String> = _apiKey
     private val _enteredMovieTitle = MutableStateFlow("")
     val enteredMovieTitle: StateFlow<String> = _enteredMovieTitle
     private val _searchTrigger = MutableStateFlow(false)
     val searchTrigger: StateFlow<Boolean> = _searchTrigger
-/*
-    private val _movies = MutableStateFlow<List<Movie>>(emptyList())
-    val movies: StateFlow<List<Movie>> = _movies
-*/
-    private val _movies = MutableStateFlow<List<Movie>>(emptyList())
-    val movies: StateFlow<List<Movie>> = _movies
 
+    private val _movies = MutableStateFlow<List<Movie>>(emptyList())
+    val movies: StateFlow<List<Movie>> = _movies
     private val _count = MutableStateFlow(0)
     val count: StateFlow<Int> = _count
     private val _errorMessage = MutableStateFlow<String?>(null)
@@ -88,9 +82,6 @@ class OmdbViewModel : ViewModel() {
                 }
             }
         }
-    }
-    fun updateApiKey(key: String){
-        _apiKey.value = key
     }
 
     fun updateEnteredMovieTitle(title: String) {

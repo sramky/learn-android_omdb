@@ -51,6 +51,12 @@ android {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
+        release {
+            buildConfigField("String", "OMDB_API_KEY", "\"${project.findProperty("OMDB_API_KEY")}\"")
+        }
+        debug {
+            buildConfigField("String", "OMDB_API_KEY", "\"${project.findProperty("OMDB_API_KEY")}\"")
+        }
     }
 
     compileOptions {
@@ -65,12 +71,12 @@ android {
     buildFeatures {
         compose = true
         aidl = false
-        buildConfig = false
+        buildConfig = true
         renderScript = false
         shaders = false
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
