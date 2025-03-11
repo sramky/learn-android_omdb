@@ -117,11 +117,11 @@ dependencies {
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
 
-    // okhttp, retrofit
-    // implementation(libs.okhttp)
+    // retrofit
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
     kapt (libs.retrofit)
+    implementation(libs.coil.compose)
 
     // Compose
     implementation(libs.androidx.compose.ui)

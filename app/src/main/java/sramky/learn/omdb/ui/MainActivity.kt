@@ -119,21 +119,31 @@ class MainActivity : ComponentActivity() {
                                 .padding(8.dp),
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            Text(text = "Title", modifier = Modifier.weight(6f), fontWeight = FontWeight.Bold)
+                            Text(text = "Poster", modifier = Modifier.weight(2f), fontWeight = FontWeight.Bold)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = "Title", modifier = Modifier.weight(5f), fontWeight = FontWeight.Bold)
                             Text(text = "Year", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
+                            Spacer(modifier = Modifier.width(8.dp))
                             Text(text = "Type", modifier = Modifier.weight(2f), fontWeight = FontWeight.Bold)
                         }
 
                         // Scrollovanie len pre položky
                         LazyColumn {
-                            items(movies) { movie ->
+                            items(movies.sortedBy { it.year }) { movie ->
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(8.dp)
                                 ) {
-                                    Text(text = movie.title, modifier = Modifier.weight(6f))
+                                    MovieThumbnail(
+                                        imageUrl = movie.poster,
+                                        modifier = Modifier
+                                            .weight(2f)
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(text = movie.title, modifier = Modifier.weight(5f))
                                     Text(text = movie.year, modifier = Modifier.weight(1f))
+                                    Spacer(modifier = Modifier.width(8.dp))
                                     Text(text = movie.type, modifier = Modifier.weight(2f))
                                 }
                             }

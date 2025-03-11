@@ -23,10 +23,16 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 
 @Composable
-fun EditableOutlinedTextField(value: String, onValueChange: (String) -> Unit, label: String) {
+fun EditableOutlinedTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String
+) {
     OutlinedTextField(
         value = value,
         onValueChange = {newText -> onValueChange(newText) },
@@ -50,4 +56,17 @@ fun TapButton(
     ) {
         Text(buttonText)
     }
+}
+
+@Composable
+fun MovieThumbnail(
+    imageUrl: String,
+    modifier: Modifier = Modifier
+) {
+    AsyncImage(
+        model = imageUrl,
+        contentDescription = "Movie thumbnail",
+        contentScale = ContentScale.Fit,
+        modifier = modifier
+    )
 }
